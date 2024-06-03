@@ -71,13 +71,12 @@ impl IComponentBase for JsonSchema {
     fn set_prop_val(&mut self, prop_num: i32, var_prop_val: &Variant) -> bool {
         match prop_num {
             0 => match var_prop_val.as_string() {
-                Some(val) => match self.set_schema(val) {
-                    Err(_) => {
+                Some(val) => {
+                    if self.set_schema(val).is_err() {
                         self.raise_an_exception("Схема не прошла валидацию");
-                        self.schema_str = "".to_string();
+                        self.schema_str = String::new();
                     }
-                    Ok(_) => {}
-                },
+                }
                 _ => return false,
             },
             1 => match var_prop_val.as_string() {
@@ -141,10 +140,7 @@ impl IComponentBase for JsonSchema {
         param_num: i32,
         var_param_def_value: &mut Variant,
     ) -> bool {
-        match method_num {
-            _ => return false,
-        }
-        true
+        false
     }
     fn has_ret_val(&self, _method_num: i32) -> bool {
         true
@@ -168,7 +164,7 @@ impl IComponentBase for JsonSchema {
                 }
 
                 let params_mut = params.unwrap();
-                let json = params_mut.get(0).unwrap().as_string().unwrap();
+                let json = params_mut.first().unwrap().as_string().unwrap();
 
                 if method_num == 0 {
                     *ret_vals = Variant::from(self.is_valid(json));
@@ -269,6 +265,6 @@ impl JsonSchema {
 
         self.schema = Some(schema);
         self.schema_str = text;
-        return Ok(());
+        Ok(())
     }
 }
