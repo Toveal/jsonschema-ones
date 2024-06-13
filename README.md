@@ -1,3 +1,5 @@
+# Этот репозиторий не поддерживается. Используйте [Этот](https://github.com/Toveal/jsonschema-1c)
+
 # Надстройка над крейтом **[jsonschema](https://crates.io/crates/jsonschema)** для 1С
 
 ## Свойства
